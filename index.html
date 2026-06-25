@@ -1,65 +1,134 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Luno AI - Your personal AI, everywhere</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="google-site-verification" content="zchUrHUR77icDJZkenFMJb4ab9jefWwCHRpPsCMrtZA" />
-    <style>
-      body { margin: 0; background-color: #09090b; overflow: hidden; }
-      @keyframes skeleton-pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Luno AI - Your personal AI, everywhere</title>
+  <meta name="description"
+    content="Luno AI is your personal AI assistant for chat, voice, coding, learning, images, and more. Open Luno on web, iPhone, Android, and Mac." />
+
+  <meta name="google-site-verification" content="zchUrHUR77icDJZkenFMJb4ab9jefWwCHRpPsCMrtZA" />
+
+  <meta property="og:title" content="Luno AI - Your personal AI, everywhere" />
+  <meta property="og:description" content="Ask, create, code, learn, and explore with Luno AI on every device." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.lunoai.in/" />
+
+  <link rel="canonical" href="https://www.lunoai.in/" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <style>
+    body {
+      margin: 0;
+      background-color: #09090b;
+      overflow: hidden;
+    }
+
+    @keyframes skeleton-pulse {
+
+      0%,
+      100% {
+        opacity: 1;
       }
-      .sk-box {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+      50% {
+        opacity: 0.4;
       }
-      #initial-loader {
-        position: fixed; inset: 0; z-index: 9999; background: #09090b; display: flex; flex-direction: column; padding: 24px; pointer-events: none; transition: opacity 0.8s ease;
+    }
+
+    .sk-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    #initial-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #09090b;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+
+    .sk-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      height: 60px;
+    }
+
+    .sk-hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 100%;
+      max-width: 768px;
+      margin: 0 auto;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .sk-nav {
+        display: none !important;
       }
-      .sk-header { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; height: 60px; }
-      .sk-hero { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 100%; max-width: 768px; margin: 0 auto; gap: 24px; }
-      
-      /* Mobile adjustments */
-      @media (max-width: 768px) {
-        .sk-nav { display: none !important; }
-        .sk-hero-title { height: 120px !important; }
-        .sk-hero-buttons { flex-direction: column; gap: 12px !important; }
-        .sk-hero-buttons .sk-box { width: 100% !important; }
+
+      .sk-hero-title {
+        height: 120px !important;
       }
-    </style>
-  </head>
-  <body>
-    <div id="initial-loader">
-      <div class="sk-header">
-        <div class="sk-box" style="width: 120px; height: 36px;"></div>
-        <div class="sk-nav" style="display: flex; gap: 32px;">
-          <div class="sk-box" style="width: 60px; height: 16px;"></div>
-          <div class="sk-box" style="width: 100px; height: 16px;"></div>
-          <div class="sk-box" style="width: 80px; height: 16px;"></div>
-        </div>
-        <div class="sk-box" style="width: 140px; height: 36px;"></div>
+
+      .sk-hero-buttons {
+        flex-direction: column;
+        gap: 12px !important;
+      }
+
+      .sk-hero-buttons .sk-box {
+        width: 100% !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="initial-loader">
+    <div class="sk-header">
+      <div class="sk-box" style="width: 120px; height: 36px"></div>
+
+      <div class="sk-nav" style="display: flex; gap: 32px">
+        <div class="sk-box" style="width: 60px; height: 16px"></div>
+        <div class="sk-box" style="width: 100px; height: 16px"></div>
+        <div class="sk-box" style="width: 80px; height: 16px"></div>
       </div>
-      
-      <div class="sk-hero">
-        <div class="sk-box" style="width: 180px; height: 28px; border-radius: 20px;"></div>
-        <div class="sk-box sk-hero-title" style="width: 90%; height: 160px; border-radius: 16px;"></div>
-        <div class="sk-box" style="width: 70%; height: 24px;"></div>
-        <div class="sk-box" style="width: 50%; height: 24px;"></div>
-        
-        <div class="sk-hero-buttons" style="display: flex; gap: 16px; margin-top: 16px;">
-          <div class="sk-box" style="width: 200px; height: 48px; border-radius: 12px;"></div>
-          <div class="sk-box" style="width: 160px; height: 48px; border-radius: 12px;"></div>
-        </div>
-      </div>
+
+      <div class="sk-box" style="width: 140px; height: 36px"></div>
     </div>
 
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+    <div class="sk-hero">
+      <div class="sk-box" style="width: 180px; height: 28px; border-radius: 20px"></div>
 
+      <div class="sk-box sk-hero-title" style="width: 90%; height: 160px; border-radius: 16px"></div>
+
+      <div class="sk-box" style="width: 70%; height: 24px"></div>
+      <div class="sk-box" style="width: 50%; height: 24px"></div>
+
+      <div class="sk-hero-buttons" style="display: flex; gap: 16px; margin-top: 16px">
+        <div class="sk-box" style="width: 200px; height: 48px; border-radius: 12px"></div>
+        <div class="sk-box" style="width: 160px; height: 48px; border-radius: 12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
