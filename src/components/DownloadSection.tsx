@@ -32,15 +32,15 @@ export const DownloadSection: React.FC = () => {
     {
       id: "ios",
       name: "iPhone / iPad",
-      fileType: "IPA file",
-      size: "12.1 MB",
-      badge: "Sideload / AltStore",
+      fileType: "Web App (PWA)",
+      size: "Instant",
+      badge: "Add to Home Screen",
       icon: <Apple className="w-6 h-6" />,
-      tagline: "Sideloadable test IPA package",
+      tagline: "Run Luno directly from your home screen as a light native app",
       requirement: "iOS 15.0 or higher",
-      link: "/downloads/luno-ios.ipa",
+      link: "https://app.lunoai.in",
       comingSoon: false,
-      btnLabel: "Download IPA",
+      btnLabel: "Install Web App",
       accentBg: "bg-blue-500/10",
       accentBorder: "border-blue-500/20",
       accentText: "text-blue-400",
@@ -100,15 +100,15 @@ export const DownloadSection: React.FC = () => {
       note: "If Play Protect flags this, tap 'Install anyway' to complete the sideload.",
     },
     ios: {
-      title: "iOS IPA Sideloading Guide",
+      title: "Add Luno to iPhone Home Screen",
       steps: [
-        "Download luno-ios.ipa directly to your device.",
-        "Open a sideload helper on your PC/Mac (AltStore or Sideloadly).",
-        "Plug your iPhone/iPad and load the IPA package.",
-        "Input Apple credentials to generate local certificates.",
-        "Go to Settings → General → VPN & Device Management and Trust the developer.",
+        "Open Safari and navigate to app.lunoai.in.",
+        "Tap the Share button (square with an up arrow) in the bottom toolbar.",
+        "Scroll down the menu and select 'Add to Home Screen'.",
+        "Name the shortcut 'Luno AI' and tap 'Add' in the top-right corner.",
+        "Launch Luno AI from your home screen to enjoy a borderless native app experience.",
       ],
-      note: "Sideloaded apps on standard accounts expire after 7 days.",
+      note: "Requires Safari browser on iOS. No App Store downloads or computer sideloading required.",
     },
     mac: {
       title: "macOS Gatekeeper Authorization",
@@ -144,10 +144,17 @@ export const DownloadSection: React.FC = () => {
         }, 800);
       } else {
         setDownloadProgress(progress);
-        if (progress < 25) setDownloadStep("Securing node socket link...");
-        else if (progress < 55) setDownloadStep("Verifying SHA-256 code signature...");
-        else if (progress < 85) setDownloadStep(`Streaming clean binaries (${progress}%)...`);
-        else setDownloadStep("Finalizing standalone packaging...");
+        if (platform.id === "ios") {
+          if (progress < 25) setDownloadStep("Detecting iOS WebKit environment...");
+          else if (progress < 55) setDownloadStep("Verifying App Manifest configuration...");
+          else if (progress < 85) setDownloadStep("Configuring local service worker cache...");
+          else setDownloadStep("PWA package ready for Home Screen installation.");
+        } else {
+          if (progress < 25) setDownloadStep("Securing node socket link...");
+          else if (progress < 55) setDownloadStep("Verifying SHA-256 code signature...");
+          else if (progress < 85) setDownloadStep(`Streaming clean binaries (${progress}%)...`);
+          else setDownloadStep("Finalizing standalone packaging...");
+        }
       }
     }, 120);
   };
@@ -329,20 +336,42 @@ export const DownloadSection: React.FC = () => {
               </div>
 
               <div className="flex gap-3">
-                <button
-                  onClick={() => setCompletedPlatform(null)}
-                  className="flex-1 h-11 rounded-xl accent-glow-btn text-xs font-semibold text-white tracking-wide cursor-pointer"
-                >
-                  Got it — Open Luno
-                </button>
-                <a
-                  href={`/downloads/luno-${completedPlatform === "android" ? "android.apk" : completedPlatform === "ios" ? "ios.ipa" : "mac.dmg"}`}
-                  download
-                  className="h-11 px-5 rounded-xl glass-effect border border-white/10 text-xs font-semibold text-zinc-300 hover:text-white transition-colors cursor-pointer flex items-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Download Again</span>
-                </a>
+                {completedPlatform === "ios" ? (
+                  <>
+                    <button
+                      onClick={() => setCompletedPlatform(null)}
+                      className="h-11 px-5 rounded-xl glass-effect border border-white/10 text-xs font-semibold text-zinc-300 hover:text-white transition-colors cursor-pointer"
+                    >
+                      Close
+                    </button>
+                    <a
+                      href="https://app.lunoai.in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 h-11 rounded-xl accent-glow-btn text-xs font-semibold text-white tracking-wide cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <span>Open app.lunoai.in</span>
+                      <span className="text-[10px]">↗</span>
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setCompletedPlatform(null)}
+                      className="flex-1 h-11 rounded-xl accent-glow-btn text-xs font-semibold text-white tracking-wide cursor-pointer"
+                    >
+                      Got it — Open Luno
+                    </button>
+                    <a
+                      href={`/downloads/luno-${completedPlatform === "android" ? "android.apk" : "mac.dmg"}`}
+                      download
+                      className="h-11 px-5 rounded-xl glass-effect border border-white/10 text-xs font-semibold text-zinc-300 hover:text-white transition-colors cursor-pointer flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>Download Again</span>
+                    </a>
+                  </>
+                )}
               </div>
             </motion.div>
           </div>
