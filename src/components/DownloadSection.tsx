@@ -13,20 +13,20 @@ export const DownloadSection: React.FC = () => {
     {
       id: "android",
       name: "Android Phone",
-      fileType: "APK file",
-      size: "24.5 MB",
-      badge: "Immediate Sideload",
+      fileType: "Coming Soon",
+      size: "-- MB",
+      badge: "Development Active",
       icon: <Smartphone className="w-6 h-6" />,
-      tagline: "Unsigned APK direct package",
+      tagline: "Native Android app client package",
       requirement: "Android 10.0 or higher",
-      link: "/downloads/luno-android.apk",
-      comingSoon: false,
-      btnLabel: "Download APK",
+      link: "#",
+      comingSoon: true,
+      btnLabel: "Coming Soon",
       accentBg: "bg-emerald-500/10",
       accentBorder: "border-emerald-500/20",
       accentText: "text-emerald-400",
       accentIcon: "text-emerald-300",
-      statusColor: "text-emerald-400",
+      statusColor: "text-amber-400",
       glowColor: "rgba(16, 185, 129, 0.12)",
     },
     {
@@ -51,20 +51,20 @@ export const DownloadSection: React.FC = () => {
     {
       id: "mac",
       name: "macOS",
-      fileType: "DMG package",
-      size: "38.2 MB",
-      badge: "Apple Silicon Native",
+      fileType: "Coming Soon",
+      size: "-- MB",
+      badge: "Development Active",
       icon: <Apple className="w-6 h-6" />,
-      tagline: "Apple M1/M2/M3 optimized",
+      tagline: "Native Apple Silicon optimized desktop client",
       requirement: "macOS Monterey 12.0+",
-      link: "/downloads/luno-mac.dmg",
-      comingSoon: false,
-      btnLabel: "Download for Mac",
+      link: "#",
+      comingSoon: true,
+      btnLabel: "Coming Soon",
       accentBg: "bg-violet-500/10",
       accentBorder: "border-violet-500/20",
       accentText: "text-violet-400",
       accentIcon: "text-violet-300",
-      statusColor: "text-emerald-400",
+      statusColor: "text-amber-400",
       glowColor: "rgba(124, 58, 237, 0.14)",
     },
     {
@@ -265,7 +265,7 @@ export const DownloadSection: React.FC = () => {
                   </div>
                 )}
                 <p className="text-[10px] text-zinc-600 text-center mt-2.5 font-mono">
-                  {isWindows ? "Windows Client coming Q4 2026" : `Direct verified link to ${platform.fileType}`}
+                  {platform.comingSoon ? `${platform.name} client in development` : `Direct link to setup ${platform.fileType}`}
                 </p>
               </div>
 
