@@ -1,0 +1,6 @@
+{
+  "name": "Luno AI",
+  "description": "Your personal AI, everywhere. Luno AI official app download and cinematic companion presentation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

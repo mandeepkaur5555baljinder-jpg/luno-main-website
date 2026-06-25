@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Gradient from blue to purple matching the Luno app icon -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Background rounded rectangle -->
+  <rect width="512" height="512" rx="128" fill="url(#bg-grad)" />
+
+  <!-- Speech bubble with stars inside -->
+  <g filter="url(#shadow)">
+    <!-- Speech bubble body -->
+    <path d="M 256,120 C 165,120 90,175 90,245 C 90,285 115,320 155,342 C 145,372 125,398 100,412 C 130,412 170,392 195,372 C 215,378 235,380 256,380 C 347,380 422,325 422,245 C 422,175 347,120 256,120 Z" fill="rgba(255, 255, 255, 0.95)" />
+    
+    <!-- Large spark / star inside the bubble -->
+    <path d="M 220,195 Q 220,230 185,230 Q 220,230 220,265 Q 220,230 255,230 Q 220,230 220,195 Z" fill="url(#bg-grad)" />
+    
+    <!-- Small spark / star inside the bubble -->
+    <path d="M 295,255 Q 295,275 275,275 Q 295,275 295,295 Q 295,275 315,275 Q 295,275 295,255 Z" fill="url(#bg-grad)" />
+  </g>
+</svg>
