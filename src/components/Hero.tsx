@@ -163,70 +163,80 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToDownload, onScrollToFeatur
           initial={{ opacity: 0, x: 40, y: 10 }}
           animate={{ opacity: 1, x: 0, y: 0 }}
           transition={{ duration: 1.2, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="hidden lg:block relative flex-shrink-0 w-80"
+          className="hidden lg:block relative flex-shrink-0 w-80 cursor-pointer group"
         >
-          {/* Ambient glow behind the card */}
-          <div className="absolute inset-0 bg-purple-600/20 blur-3xl rounded-3xl scale-110" />
+          <a
+            href="https://app.lunoai.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            {/* Ambient glow behind the card */}
+            <div className="absolute inset-0 bg-purple-600/20 blur-3xl rounded-3xl scale-110 group-hover:bg-purple-600/35 group-hover:scale-120 transition-all duration-500" />
 
-          {/* Phone/card frame */}
-          <div className="relative glass-effect rounded-3xl border border-white/10 overflow-hidden shadow-2xl float-gentle">
-            {/* Chat header */}
-            <div className="flex items-center gap-2.5 px-4 py-3 border-b border-white/6 bg-white/2">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 via-violet-500 to-purple-700 flex items-center justify-center shadow-lg pulse-glow flex-shrink-0">
-                <Sparkles className="w-3.5 h-3.5 text-white fill-white" />
+            {/* Phone/card frame */}
+            <div className="relative glass-effect rounded-3xl border border-white/10 overflow-hidden shadow-2xl float-gentle group-hover:border-purple-500/40 group-hover:shadow-[0_0_50px_rgba(168,85,247,0.3)] transition-all duration-500">
+              {/* Chat header */}
+              <div className="flex items-center gap-2.5 px-4 py-3 border-b border-white/6 bg-white/2">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-purple-500 via-violet-500 to-purple-700 flex items-center justify-center shadow-lg pulse-glow flex-shrink-0">
+                  <Sparkles className="w-3.5 h-3.5 text-white fill-white" />
+                </div>
+                <div>
+                  <span className="text-xs font-semibold text-white">Luno AI</span>
+                  <span className="text-[10px] text-emerald-400 block font-mono">● Online</span>
+                </div>
+                <div className="ml-auto text-[10px] font-mono text-zinc-500 group-hover:text-purple-300 transition-colors duration-300 flex items-center gap-1">
+                  <span>Open App</span>
+                  <span className="text-[8px] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                </div>
               </div>
-              <div>
-                <span className="text-xs font-semibold text-white">Luno AI</span>
-                <span className="text-[10px] text-emerald-400 block font-mono">● Online</span>
+
+              {/* Chat messages */}
+              <div className="p-4 space-y-3">
+                {/* User message */}
+                <div className="flex justify-end">
+                  <div className="bg-purple-600/40 border border-purple-500/20 rounded-2xl rounded-tr-sm px-3.5 py-2.5 max-w-[80%]">
+                    <p className="text-xs text-white leading-relaxed">Explain quantum superposition simply</p>
+                  </div>
+                </div>
+
+                {/* AI response */}
+                <div className="flex gap-2.5">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Sparkles className="w-3 h-3 text-white fill-white" />
+                  </div>
+                  <div className="glass-effect-light rounded-2xl rounded-tl-sm px-3.5 py-2.5 max-w-[85%]">
+                    <p className="text-xs text-zinc-200 leading-relaxed">
+                      Imagine a coin spinning in the air — it's both heads <em>and</em> tails at once. Only when it lands does it "choose" one state. That's superposition.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Typing indicator */}
+                <div className="flex gap-2 items-center opacity-60">
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-violet-700 flex-shrink-0" />
+                  <div className="glass-effect-light rounded-full px-3 py-2 flex gap-1.5">
+                    {[0, 0.2, 0.4].map((d) => (
+                      <motion.div
+                        key={d}
+                        className="w-1.5 h-1.5 bg-purple-400 rounded-full"
+                        animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: d }}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="ml-auto text-[10px] font-mono text-zinc-600">v1.2.0</div>
+
+              {/* Input bar */}
+              <div className="mx-4 mb-4 mt-1 flex items-center gap-2 bg-white/5 border border-white/8 rounded-xl px-3 py-2.5 group-hover:bg-white/10 group-hover:border-purple-500/30 transition-all duration-500">
+                <span className="text-[11px] text-zinc-500 flex-1 font-sans">Ask Luno anything...</span>
+                <div className="w-6 h-6 rounded-lg bg-purple-600/80 flex items-center justify-center flex-shrink-0 group-hover:bg-purple-500 transition-all duration-500">
+                  <ChevronRight className="w-3.5 h-3.5 text-white" />
+                </div>
+              </div>
             </div>
-
-            {/* Chat messages */}
-            <div className="p-4 space-y-3">
-              {/* User message */}
-              <div className="flex justify-end">
-                <div className="bg-purple-600/40 border border-purple-500/20 rounded-2xl rounded-tr-sm px-3.5 py-2.5 max-w-[80%]">
-                  <p className="text-xs text-white leading-relaxed">Explain quantum superposition simply</p>
-                </div>
-              </div>
-
-              {/* AI response */}
-              <div className="flex gap-2.5">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Sparkles className="w-3 h-3 text-white fill-white" />
-                </div>
-                <div className="glass-effect-light rounded-2xl rounded-tl-sm px-3.5 py-2.5 max-w-[85%]">
-                  <p className="text-xs text-zinc-200 leading-relaxed">
-                    Imagine a coin spinning in the air — it's both heads <em>and</em> tails at once. Only when it lands does it "choose" one state. That's superposition.
-                  </p>
-                </div>
-              </div>
-
-              {/* Typing indicator */}
-              <div className="flex gap-2 items-center opacity-60">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-violet-700 flex-shrink-0" />
-                <div className="glass-effect-light rounded-full px-3 py-2 flex gap-1.5">
-                  {[0, 0.2, 0.4].map((d) => (
-                    <motion.div
-                      key={d}
-                      className="w-1.5 h-1.5 bg-purple-400 rounded-full"
-                      animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }}
-                      transition={{ duration: 1, repeat: Infinity, delay: d }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Input bar */}
-            <div className="mx-4 mb-4 mt-1 flex items-center gap-2 bg-white/5 border border-white/8 rounded-xl px-3 py-2.5">
-              <span className="text-[11px] text-zinc-500 flex-1 font-sans">Ask Luno anything...</span>
-              <div className="w-6 h-6 rounded-lg bg-purple-600/80 flex items-center justify-center flex-shrink-0">
-                <ChevronRight className="w-3.5 h-3.5 text-white" />
-              </div>
-            </div>
-          </div>
+          </a>
         </motion.div>
       </div>
 
