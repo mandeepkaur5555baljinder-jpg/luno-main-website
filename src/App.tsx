@@ -1,104 +1,93 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { motion, useScroll, useSpring } from "motion/react";
 import { Hero } from "./components/Hero";
 import { StorySection } from "./components/StorySection";
 import { Features } from "./components/Features";
 import { AppPreview } from "./components/AppPreview";
 import { DownloadSection } from "./components/DownloadSection";
 import { Footer } from "./components/Footer";
-import { ParticlesBackground } from "./components/ui/ParticlesBackground";
+import { MoonBackground } from "./components/MoonBackground";
 
 export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeStep, setActiveStep] = useState(0);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
-  // Handle the initial global loading skeleton
+  const { scrollYProgress } = useScroll();
+  const progressScaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.2 });
+
   useEffect(() => {
-    // Wait for React to paint the DOM, then fade out the skeleton loader
-    const timer = setTimeout(() => {
-      const loader = document.getElementById('initial-loader');
-      if (loader) {
-        loader.style.opacity = '0'; // Start fade out
-        setTimeout(() => {
-          loader.style.display = 'none'; // Remove from layout
-          document.body.style.overflow = 'auto'; // Unlock scrolling
-        }, 800); // Matches the CSS transition time
-      } else {
-        document.body.style.overflow = 'auto';
-      }
-    }, 200);
-
-    return () => clearTimeout(timer);
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mq.matches);
+    const onChange = () => setReduceMotion(mq.matches);
+    mq.addEventListener?.("change", onChange);
+    return () => mq.removeEventListener?.("change", onChange);
   }, []);
 
-  // Monitor raw vertical scroll progress percentage across the viewport
   useEffect(() => {
-    const handleScroll = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (docHeight > 0) {
-        setScrollProgress(window.scrollY / docHeight);
-      }
-
-      // If we scroll past the story section content entirely down to the features/downloads,
-      // lock the 3D model into step 4 (its settle state as download companion)
-      const storyEl = document.getElementById("story-anchor");
-      if (storyEl) {
-        const storyRect = storyEl.getBoundingClientRect();
-        // If the story container's bottom has scrolled past the screen midpoint, lock step to 4
-        if (storyRect.bottom < (window.innerHeight * 0.55)) {
-          setActiveStep(4);
-        }
+    let ticking = false;
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0);
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
       }
     };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const loader = document.getElementById("initial-loader");
+      if (loader) {
+        loader.style.opacity = "0";
+        setTimeout(() => {
+          loader.style.display = "none";
+          document.body.style.overflow = "auto";
+        }, 500);
+      } else {
+        document.body.style.overflow = "auto";
+      }
+    }, 120);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleScrollToSection = (id: string) => {
     const target = document.getElementById(id);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
+    if (target) target.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <div className="relative min-h-screen grid-bg overflow-x-hidden text-white font-sans selection:bg-purple-500/20 selection:text-white">
+    <div className="relative min-h-screen overflow-x-hidden text-cream font-sans selection:bg-amber-400/40">
 
-      {/* AURORA ORBS — animated ambient background glow */}
-      <div className="aurora-orb-1" aria-hidden="true" />
-      <div className="aurora-orb-2" aria-hidden="true" />
+      <motion.div
+        className="scroll-progress-bar fixed top-0 left-0 right-0 h-[3px] z-[60] pointer-events-none"
+        style={{ scaleX: progressScaleX }}
+        aria-hidden="true"
+      />
 
-      {/* DYNAMIC SCROLL PARTICLES BACKGROUND */}
-      <ParticlesBackground />
+      {!reduceMotion && <MoonBackground scrollProgress={scrollProgress} />}
+      <div className="page-veil" aria-hidden="true" />
 
-
-      {/* FOREGROUND LAYOUT LAYERS */}
-      <div className="relative z-20">
-
-        {/* HERO HEADER */}
+      <div className="relative z-10">
         <Hero
           onScrollToDownload={() => handleScrollToSection("download")}
           onScrollToFeatures={() => handleScrollToSection("features")}
         />
-
-        {/* CONTAINER HOLDING THE INTERSECTION OBSERVERS FOR STORY STEPS */}
-        <div id="story-anchor">
-          <StorySection activeStep={activeStep} setActiveStep={setActiveStep} />
-        </div>
-
-        {/* BENTO FUNCTIONAL FEATURES */}
+        <StorySection />
         <Features />
-
-
-        {/* USER UTILITY AND APP SCREEN SIMULATION */}
         <AppPreview />
-
-        {/* SECURE APK/IPA LOGISTICS DOWNLOAD CARDS */}
         <DownloadSection />
-
-        {/* HIGH-TRUST BADGES & COPYRIGHT CREDITS FOOTER */}
         <Footer onScrollToDownload={() => handleScrollToSection("download")} />
-
       </div>
 
     </div>

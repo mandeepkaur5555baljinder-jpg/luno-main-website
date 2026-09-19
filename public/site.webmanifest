@@ -1,0 +1,23 @@
+{
+  "name": "Luno — Personal AI",
+  "short_name": "Luno",
+  "description": "Luno is a personal AI assistant for chat, voice, vision, and code.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07060d",
+  "theme_color": "#07060d",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
