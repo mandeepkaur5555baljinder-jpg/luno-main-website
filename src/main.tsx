@@ -17,7 +17,10 @@ const fontsReady = Promise.race([
 ]).catch(() => undefined);
 
 fontsReady.then(() => {
-  createRoot(document.getElementById('root')!).render(
+  const root = createRoot(document.getElementById('root')!);
+  // Dev only: lets tests unmount the tree to check for leaks.
+  if (import.meta.env.DEV) (window as unknown as { __lunoRoot?: unknown }).__lunoRoot = root;
+  root.render(
     <StrictMode>
       <App />
     </StrictMode>,

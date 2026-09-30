@@ -92,8 +92,9 @@ export function Fade({
 /* ------------------------------------------------------------------ Button */
 
 /**
- * Link styled as a button with a magnetic hover (fine pointers only), a cursor-following
- * highlight, an arrow that slides, and a small press response.
+ * Link styled as a button. The magnetic effect is deliberately tiny (label and arrow drift a few
+ * pixels toward the cursor; the button itself never moves, so its hit area cannot jitter), plus a
+ * cursor-following highlight, a sliding arrow and a small press response. Fine pointers only.
  */
 export function Button({
   href,
@@ -126,8 +127,9 @@ export function Button({
       const r = el.getBoundingClientRect();
       const dx = px - (r.left + r.width / 2);
       const dy = py - (r.top + r.height / 2);
-      el.style.setProperty("--tx", `${(dx * 0.16).toFixed(2)}px`);
-      el.style.setProperty("--ty", `${(dy * 0.28).toFixed(2)}px`);
+      const cl = (v: number, m: number) => Math.max(-m, Math.min(m, v));
+      el.style.setProperty("--tx", `${cl(dx * 0.06, 3).toFixed(2)}px`);
+      el.style.setProperty("--ty", `${cl(dy * 0.1, 2.5).toFixed(2)}px`);
       el.style.setProperty("--mx", `${(((px - r.left) / r.width) * 100).toFixed(1)}%`);
       el.style.setProperty("--my", `${(((py - r.top) / r.height) * 100).toFixed(1)}%`);
     };

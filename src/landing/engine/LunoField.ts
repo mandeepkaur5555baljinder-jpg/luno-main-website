@@ -21,6 +21,9 @@ export interface FieldFrame {
   pointerX: number;
   pointerY: number;
   pointerAmt: number;
+  parallaxX: number;
+  parallaxY: number;
+  dof: number;
   pulse: number;
   flow: number;
   activeKind: number;
@@ -128,7 +131,7 @@ export class LunoField {
 
     for (const name of [
       "uViewProj", "uModel", "uFrom", "uTo", "uF", "uSpread", "uSwirl", "uTime", "uBreath", "uPointer",
-      "uPointerAmt", "uPulse", "uFlow", "uActive", "uActiveKind", "uActiveAmt", "uSize", "uPx", "uMaxPx",
+      "uPointerAmt", "uParallax", "uDof", "uPulse", "uFlow", "uActive", "uActiveKind", "uActiveAmt", "uSize", "uPx", "uMaxPx",
       "uDim", "uMood", "uAssemble",
     ]) this.uni[name] = gl.getUniformLocation(this.pointsProg, name);
     for (const name of ["uRes", "uGlow", "uMood", "uDim"]) this.bgUni[name] = gl.getUniformLocation(this.bgProg, name);
@@ -276,6 +279,8 @@ export class LunoField {
     gl.uniform1f(u.uBreath, fr.breath);
     gl.uniform2f(u.uPointer, fr.pointerX, fr.pointerY);
     gl.uniform1f(u.uPointerAmt, fr.pointerAmt);
+    gl.uniform2f(u.uParallax, fr.parallaxX, fr.parallaxY);
+    gl.uniform1f(u.uDof, fr.dof);
     gl.uniform1f(u.uPulse, fr.pulse);
     gl.uniform1f(u.uFlow, fr.flow);
     gl.uniform1f(u.uActive, fr.active);

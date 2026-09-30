@@ -47,6 +47,8 @@ body {
   text-rendering: optimizeLegibility;
   /* `clip`, not `hidden`: hidden would break position: sticky on the scenes. */
   overflow-x: clip;
+  /* no horizontal rubber-banding / swipe chaining from the page itself */
+  overscroll-behavior-x: none;
 }
 
 ::selection { background: var(--cyan); color: var(--bg); }

@@ -1,5 +1,5 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
-import { APP_URL, MODES, STREAMS } from "../content";
+import { APP_URL, CAPABILITIES, MODES } from "../content";
 import { SCENES, SCENE_INDEX } from "../scenes";
 import { useDirector, useSceneState } from "../context";
 import { ConversationDemo } from "./ConversationDemo";
@@ -122,46 +122,42 @@ function Understanding({ active }: { active: boolean }) {
 
 /* ------------------------------------------------------------ 03 · modes */
 
+/** Modes = how Luno thinks. One core; the visitor scrolls it through four formations. */
 function Modes({ active, mode }: { active: boolean; mode: number }) {
   const director = useDirector();
-  const [pinned, setPinned] = useState<number | null>(null);
+  const on = active ? mode : -1;
+  const shown = MODES[Math.max(0, on)];
 
-  // Scrolling hands control back to the timeline.
-  useEffect(() => {
-    setPinned(null);
-    director?.setManual(0, null);
-  }, [mode, director]);
-
-  const set = (i: number | null) => {
-    setPinned(i);
-    director?.setManual(0, i);
+  const go = (i: number) => {
+    if (!director) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: director.modeScrollY(i), behavior: reduced ? "auto" : "smooth" });
   };
-  const on = pinned ?? (active ? Math.max(0, mode) : -1);
 
   return (
-    <Scene id="modes" active={active}>
+    <Scene id="modes" active={active} className="lu-scene--modes">
+      {/* enormous outlined mode name behind the particles' foreground: scale + depth without extra GPU */}
+      <div className="lu-ghost" aria-hidden="true">
+        {MODES.map((m, i) => (
+          <span key={m.id} data-on={on === i}>{m.name}</span>
+        ))}
+      </div>
+
       <div className="lu-top">
         <Kicker>03 — Modes</Kicker>
-        <Headline lines={[[{ t: "Five ways in." }], [{ t: "One", fx: "outline" }, { t: "Luno." }]]} />
+        <Headline lines={[[{ t: "One" }, { t: "Luno.", fx: "outline" }]]} />
+        <Fade as="p" order={3} className="lu-sub">Different ways of thinking.</Fade>
       </div>
 
       <div className="lu-modes">
         <Fade as="p" order={4} className="lu-mode-panel" aria-live="off">
-          <strong>{MODES[Math.max(0, on)]?.line}</strong> {MODES[Math.max(0, on)]?.body}
+          <strong>{shown.line}</strong> {shown.body}
         </Fade>
         <Fade as="ol" order={5} className="lu-mode-list">
           {MODES.map((m, i) => (
             <li key={m.id} data-on={on === i}>
-              <button
-                type="button"
-                aria-pressed={on === i}
-                onPointerEnter={(e) => e.pointerType === "mouse" && set(i)}
-                onPointerLeave={(e) => e.pointerType === "mouse" && set(null)}
-                onFocus={() => set(i)}
-                onBlur={() => set(null)}
-                onClick={() => set(i)}
-              >
-                <span className="lu-mode__idx">0{i + 1}</span>
+              <button type="button" aria-current={on === i ? "true" : undefined} onClick={() => go(i)}>
+                <span className="lu-mode__idx">0{i + 1} · {m.feel}</span>
                 <span className="lu-mode__name">{m.name}</span>
                 <span className="lu-mode__desc">
                   <b>{m.line}</b>
@@ -178,6 +174,7 @@ function Modes({ active, mode }: { active: boolean; mode: number }) {
 
 /* --------------------------------------------------- 04 · capabilities */
 
+/** Capabilities = what Luno can do. Six streams; hover / focus / tap lights one. */
 function Capabilities({ active, stream }: { active: boolean; stream: number }) {
   const director = useDirector();
   const [pinned, setPinned] = useState<number | null>(null);
@@ -195,11 +192,11 @@ function Capabilities({ active, stream }: { active: boolean; stream: number }) {
     <Scene id="capabilities" active={active} className="lu-scene--caps">
       <div className="lu-top">
         <Kicker>04 — Capabilities</Kicker>
-        <Headline lines={[[{ t: "Thinks first." }], [{ t: "Checks when" }, { t: "it matters.", fx: "dots" }]]} />
+        <Headline lines={[[{ t: "What Luno" }], [{ t: "can", fx: "outline" }, { t: "do." }]]} />
       </div>
       <Fade as="ul" order={4} className="lu-streams">
-        {STREAMS.map((s, i) => (
-          <li key={s.id} data-on={on === i}>
+        {CAPABILITIES.map((c, i) => (
+          <li key={c.id} data-on={on === i}>
             <button
               type="button"
               aria-pressed={on === i}
@@ -209,8 +206,8 @@ function Capabilities({ active, stream }: { active: boolean; stream: number }) {
               onBlur={() => set(null)}
               onClick={() => set(i)}
             >
-              <span className="lu-stream__name">{s.name}</span>
-              <span className="lu-stream__desc">{s.body}</span>
+              <span className="lu-stream__name">{c.name}</span>
+              <span className="lu-stream__desc">{c.body}</span>
             </button>
           </li>
         ))}

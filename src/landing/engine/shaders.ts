@@ -3,7 +3,7 @@
 export const POINTS_VERT = /* glsl */ `#version 300 es
 precision highp float;
 
-in vec4 aS0; in vec4 aS1; in vec4 aS2; in vec4 aS3; in vec4 aS4; in vec4 aS5; in vec4 aS6;
+in vec4 aS0; in vec4 aS1; in vec4 aS2; in vec4 aS3; in vec4 aS4; in vec4 aS5; in vec4 aS6; in vec4 aS7; in vec4 aS8; in vec4 aS9;
 in vec4 aSeed;  // x delay, y tone, z size random, w phase
 in vec3 aMeta;  // x cluster, y ribbon, z stream coordinate
 
@@ -17,6 +17,8 @@ uniform float uSwirl;
 uniform float uTime;
 uniform float uBreath;
 uniform vec2  uPointer;
+uniform vec2  uParallax;
+uniform float uDof;
 uniform float uPointerAmt;
 uniform float uPulse;
 uniform float uFlow;
@@ -31,6 +33,7 @@ uniform float uMood;
 uniform float uAssemble;
 
 out vec4 vCol;
+out float vSoft;
 
 vec4 pick(float k) {
   if (k < 0.5) return aS0;
@@ -39,7 +42,10 @@ vec4 pick(float k) {
   if (k < 3.5) return aS3;
   if (k < 4.5) return aS4;
   if (k < 5.5) return aS5;
-  return aS6;
+  if (k < 6.5) return aS6;
+  if (k < 7.5) return aS7;
+  if (k < 8.5) return aS8;
+  return aS9;
 }
 
 void main() {
@@ -76,6 +82,8 @@ void main() {
   float fall = exp(-dot(d, d) * 1.5) * uPointerAmt;
   world.xy -= d * fall * 0.26;
   world.z += fall * 0.3 * (aSeed.z - 0.35);
+  // Depth parallax: near points travel with the cursor, far points against it.
+  world.xy += uParallax * world.z * 0.5;
 
   vec4 clip = uViewProj * world;
   gl_Position = clip;
@@ -92,7 +100,10 @@ void main() {
   float tw = 1.0 - uBreath * 0.22 * (0.5 + 0.5 * sin(uTime * 1.3 + aSeed.w * 40.0));
   float depth = clamp(1.25 - (clip.w - 7.0) * 0.14, 0.45, 1.25);
 
-  float size = uSize * (0.55 + aSeed.z * 0.95) * (0.65 + 0.55 * br) * (1.0 + 0.35 * uFlow * wave);
+  // Cheap depth of field: points away from the focal plane grow soft and dim.
+  float soft = clamp(abs(clip.w - 7.0) / 3.2, 0.0, 1.0) * uDof;
+  vSoft = soft;
+  float size = uSize * (0.55 + aSeed.z * 0.95) * (0.65 + 0.55 * br) * (1.0 + 0.35 * uFlow * wave) * (1.0 + soft * 0.75);
   gl_PointSize = clamp(size * uPx / clip.w, 1.0, uMaxPx);
 
   // Palette: cyan → electric blue, cool-white highlights, a whisper of violet.
@@ -106,7 +117,7 @@ void main() {
   col = mix(col, white, smoothstep(0.55, 1.0, br) * 0.72);
   col = mix(col, violet, step(0.982, tone) * 0.55);
 
-  float inten = br * uDim * tw * depth * boost;
+  float inten = br * uDim * tw * depth * boost * (1.0 - soft * 0.5);
   vCol = vec4(col, inten);
 }
 `;
@@ -114,13 +125,14 @@ void main() {
 export const POINTS_FRAG = /* glsl */ `#version 300 es
 precision mediump float;
 in vec4 vCol;
+in float vSoft;
 out vec4 o;
 void main() {
   vec2 q = gl_PointCoord - 0.5;
   float d = dot(q, q) * 4.0;
   if (d > 1.0) discard;
   float a = 1.0 - d;
-  a *= a;
+  a = mix(a * a, a, vSoft);
   o = vec4(vCol.rgb * vCol.a * a, 1.0);
 }
 `;

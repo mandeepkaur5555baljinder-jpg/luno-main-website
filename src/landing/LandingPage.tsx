@@ -12,7 +12,7 @@ import "./landing.css";
 function SceneAttr({ rootRef }: { rootRef: React.RefObject<HTMLDivElement | null> }) {
   const { active } = useSceneState();
   useEffect(() => {
-    if (rootRef.current) rootRef.current.dataset.scene = String(active);
+    if (rootRef.current) rootRef.current.dataset.current = String(active);
   }, [active, rootRef]);
   return null;
 }
@@ -48,6 +48,8 @@ export default function LandingPage() {
         if (disposed) return;
         const res = bootEngine(root, canvasRef.current, q);
         dir = res.director;
+        // Dev only (stripped from production builds): lets tests read the live frame state.
+        if (import.meta.env.DEV) (window as unknown as { __luno?: Director }).__luno = res.director;
         setDirector(res.director);
         setMode(res.hasField ? "webgl" : "css");
       } catch (err) {

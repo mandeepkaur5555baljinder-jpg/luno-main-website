@@ -15,66 +15,58 @@ export const NAV_LINKS = [
   { label: "Safety", href: "#privacy" },
 ] as const;
 
-/** The five ways into Luno (scene 04). Order matches the five particle clusters. */
+/**
+ * MODES = how Luno thinks. Four manifestations of one core (scene 03, in this order).
+ * Provider / model names never appear on the site: these are Luno modes.
+ */
 export const MODES = [
   {
-    id: "chat",
-    name: "Chat",
-    line: "Conversations that hold together.",
-    body: "Ask follow-ups, change direction, come back to something from earlier. Luno keeps up without you repeating yourself.",
+    id: "auto",
+    name: "Auto",
+    line: "Adapts to the question.",
+    body: "Luno reads the request and decides how much thinking it needs, so you never have to choose. Just ask.",
+    feel: "Adaptive · routing",
   },
   {
-    id: "voice",
-    name: "Voice",
-    line: "A voice you can actually talk to.",
-    body: "Full back-and-forth speech, interruptions included. Say what you mean and Luno answers out loud.",
+    id: "pro",
+    name: "Pro",
+    line: "Advanced general intelligence.",
+    body: "More capable and more thorough, for the demanding everyday work: writing, analysis, planning.",
+    feel: "Dense · structured",
   },
   {
-    id: "vision",
-    name: "Vision",
-    line: "Reads what you show it.",
-    body: "Whiteboards, screenshots, handwritten notes. Point a camera at it and ask what's going on.",
+    id: "deep",
+    name: "Deep",
+    line: "Depth, in layers.",
+    body: "Explores a problem from several angles before it answers. For hard reasoning and open-ended exploration.",
+    feel: "Layered · exploratory",
   },
   {
     id: "code",
     name: "Code",
-    line: "Writes and explains real code.",
-    body: "TypeScript, Python, Rust, Go. Ask for a function or a whole approach and get working code back.",
-  },
-  {
-    id: "reasoning",
-    name: "Reasoning",
-    line: "Slows down for hard questions.",
-    body: "Math, proofs and multi-step problems are worked through step by step instead of guessed at.",
+    line: "Built for engineering.",
+    body: "Precise, structured help writing, reading and reasoning about code.",
+    feel: "Precise · computational",
   },
 ] as const;
 
-/** The four streams (scene 05). */
-export const STREAMS = [
-  {
-    id: "reason",
-    name: "Reasoning",
-    body: "Hard problems are worked through in steps you can follow.",
-  },
-  {
-    id: "search",
-    name: "Search",
-    body: "For anything time-sensitive, Luno looks it up instead of leaning on stale training data.",
-  },
-  {
-    id: "memory",
-    name: "Memory",
-    body: "Preferences and past context carry forward, so you aren't re-explaining yourself every session.",
-  },
-  {
-    id: "sync",
-    name: "Sync",
-    body: "Start on your phone, finish on your laptop. The thread is still there.",
-  },
+/**
+ * CAPABILITIES = what Luno can do (scene 04). Each one is something the previous site already
+ * claimed for the product; add nothing here that the app does not do.
+ */
+export const CAPABILITIES = [
+  { id: "reasoning", name: "Reasoning", body: "Hard problems are worked through in steps you can follow." },
+  { id: "search", name: "Search", body: "For anything time-sensitive, Luno looks it up instead of leaning on stale training data." },
+  { id: "memory", name: "Memory", body: "Preferences and past context carry forward, private to your own account." },
+  { id: "sync", name: "Sync", body: "Start on your phone, finish on your laptop. The thread is still there." },
+  { id: "vision", name: "Vision", body: "Photos, screenshots and handwritten notes, read and turned into text you can use." },
+  { id: "voice", name: "Voice", body: "Full back-and-forth speech, interruptions included." },
 ] as const;
 
 export interface DemoScript {
   id: "chat" | "reasoning" | "code";
+  /** the Luno mode this sample is shown in */
+  mode: "Auto" | "Deep" | "Code";
   label: string;
   user: string;
   reply: string;
@@ -84,20 +76,23 @@ export interface DemoScript {
 export const DEMOS: DemoScript[] = [
   {
     id: "chat",
-    label: "Chat",
+    mode: "Auto",
+    label: "Auto",
     user: "Explain quantum superposition simply.",
     reply:
       "Like a coin spinning mid-air. It's both heads and tails at once, and it only “chooses” when it lands.",
   },
   {
     id: "reasoning",
-    label: "Reasoning",
+    mode: "Deep",
+    label: "Deep",
     user: "Is 221 prime? Show your work.",
     reply:
       "√221 ≈ 14.9, so I only need to test primes up to 13.\n2, 3, 5, 7 and 11 don't divide it.\n13 × 17 = 221.\n\nSo no: 221 is not prime.",
   },
   {
     id: "code",
+    mode: "Code",
     label: "Code",
     user: "A React hook that syncs a value to localStorage across tabs?",
     reply: "Here's a small typed version. The storage event keeps other tabs in step:",
