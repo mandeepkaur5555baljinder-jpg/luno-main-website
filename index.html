@@ -3,18 +3,37 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
   <title>Luno — a personal AI that feels like yours</title>
   <meta name="description"
-    content="Luno is a personal AI assistant for chat, voice, vision, and code, built solo by one developer. Open it in your browser today, or add it to your iPhone home screen." />
+    content="Luno is a personal AI assistant for chat, voice, vision, and code, with Auto, Pro, Deep and Code modes. Built solo by one developer. Open it in your browser today, or add it to your iPhone home screen." />
 
   <meta name="google-site-verification" content="TmtvCHehvRWuewzKmibkrRtkle0wikRoF5Tfv3z1Zos" />
 
+  <!--
+    SOCIAL PREVIEW  ─  ONE replacement point
+    The share image is /public/og-image.jpg (1200 × 630, JPEG, under ~300 KB). It is currently a
+    PLACEHOLDER rendered from the hero. To ship the final art, overwrite that one file (keep the
+    name, size and ratio) and update og:image:alt if the artwork changes. Nothing else needs editing.
+    Full guidance: docs/social-preview.md
+    Note: crawlers need an absolute URL, so the domain below must match the production origin.
+  -->
+  <meta property="og:site_name" content="Luno" />
   <meta property="og:title" content="Luno — a personal AI that feels like yours" />
-  <meta property="og:description" content="A personal AI assistant for chat, voice, vision, and code. Live today at app.lunoai.in." />
+  <meta property="og:description" content="A personal AI assistant for chat, voice, vision, and code, with Auto, Pro, Deep and Code modes. Live today at app.lunoai.in." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.lunoai.in/" />
+  <meta property="og:image" content="https://www.lunoai.in/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Luno: a glowing orb of light particles above the words “A personal AI that feels like yours”." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Luno — a personal AI that feels like yours" />
+  <meta name="twitter:description" content="A personal AI assistant for chat, voice, vision, and code, with Auto, Pro, Deep and Code modes." />
+  <meta name="twitter:image" content="https://www.lunoai.in/og-image.jpg" />
+  <meta name="twitter:image:alt" content="Luno: a glowing orb of light particles above the words “A personal AI that feels like yours”." />
 
   <link rel="canonical" href="https://www.lunoai.in/" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -23,96 +42,102 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <meta name="theme-color" content="#07060d" />
+  <meta name="theme-color" content="#03060a" />
+  <meta name="color-scheme" content="dark" />
+
+  <!-- Display face, preloaded so the first render already has the right metrics (no re-wrap). -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="/node_modules/@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Luno",
+    "url": "https://www.lunoai.in/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Web, iOS (Add to Home Screen)",
+    "description": "A personal AI assistant for chat, voice, vision, and code, with Auto, Pro, Deep and Code modes.",
+    "image": "https://www.lunoai.in/og-image.jpg",
+    "offers": { "@type": "Offer", "url": "https://app.lunoai.in" }
+  }
+  </script>
 
   <style>
-    body {
-      margin: 0;
-      background-color: #07060d;
-      overflow: hidden;
-    }
+    html, body { margin: 0; background: #03060a; }
 
-    @keyframes skeleton-pulse {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: 0.4; }
-    }
-
-    .sk-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 12px;
-      animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-
-    #initial-loader {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: #07060d;
-      display: flex;
-      flex-direction: column;
-      padding: 24px;
+    /* Boot: a single mark and three particles, gone as soon as the hero is ready. */
+    #boot {
+      position: fixed; inset: 0; z-index: 400;
+      display: grid; place-items: center;
+      background: #03060a;
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s 0.75s;
       pointer-events: none;
-      transition: opacity 0.6s ease;
     }
-
-    .sk-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      height: 64px;
+    html[data-ready] #boot { opacity: 0; visibility: hidden; }
+    #boot .b-mark { position: relative; width: 44px; height: 44px; animation: b-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    #boot .b-core {
+      position: absolute; inset: 11px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #eafffb, #4df0e0 45%, #1a6fd8);
+      box-shadow: 0 0 28px rgba(77, 240, 224, 0.45);
     }
-
-    .sk-hero {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      width: 100%;
-      max-width: 768px;
-      margin: 0 auto;
-      gap: 24px;
+    #boot .b-ring { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(77, 240, 224, 0.4); }
+    #boot .b-dot {
+      position: absolute; left: 50%; top: 50%; width: 3px; height: 3px; margin: -1.5px;
+      border-radius: 50%; background: #eaf6fb;
+      animation: b-orbit 2.2s cubic-bezier(0.45, 0, 0.2, 1) infinite;
     }
-
-    @media (max-width: 768px) {
-      .sk-nav { display: none !important; }
-      .sk-hero-title { height: 120px !important; }
-      .sk-hero-buttons { flex-direction: column; gap: 12px !important; }
-      .sk-hero-buttons .sk-box { width: 100% !important; }
+    #boot .b-dot:nth-of-type(2) { animation-delay: -0.73s; }
+    #boot .b-dot:nth-of-type(3) { animation-delay: -1.46s; }
+    @keyframes b-in { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: none; } }
+    @keyframes b-orbit {
+      from { transform: rotate(0turn) translateX(34px) scale(0.6); opacity: 0.2; }
+      50% { opacity: 1; transform: rotate(0.5turn) translateX(22px) scale(1); }
+      to { transform: rotate(1turn) translateX(34px) scale(0.6); opacity: 0.2; }
     }
+    @media (prefers-reduced-motion: reduce) { #boot .b-dot, #boot .b-mark { animation: none; } }
   </style>
 </head>
 
 <body>
-  <div id="initial-loader">
-    <div class="sk-header">
-      <div class="sk-box" style="width: 100px; height: 34px"></div>
-
-      <div class="sk-nav" style="display: flex; gap: 32px">
-        <div class="sk-box" style="width: 60px; height: 16px"></div>
-        <div class="sk-box" style="width: 60px; height: 16px"></div>
-        <div class="sk-box" style="width: 80px; height: 16px"></div>
-      </div>
-
-      <div class="sk-box" style="width: 130px; height: 40px"></div>
-    </div>
-
-    <div class="sk-hero">
-      <div class="sk-box" style="width: 200px; height: 30px; border-radius: 20px"></div>
-      <div class="sk-box sk-hero-title" style="width: 90%; height: 150px; border-radius: 14px"></div>
-      <div class="sk-box" style="width: 60%; height: 22px"></div>
-
-      <div class="sk-hero-buttons" style="display: flex; gap: 16px; margin-top: 16px">
-        <div class="sk-box" style="width: 160px; height: 48px; border-radius: 10px"></div>
-        <div class="sk-box" style="width: 180px; height: 48px; border-radius: 10px"></div>
-      </div>
+  <div id="boot" aria-hidden="true">
+    <div class="b-mark">
+      <span class="b-ring"></span><span class="b-core"></span>
+      <span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span>
     </div>
   </div>
 
-  <div id="root"></div>
+  <!-- Real, crawlable content. React replaces this on mount; it is also what
+       search engines and no-JS readers get. -->
+  <div id="root">
+    <main style="color:#eaf6fb;font-family:system-ui,sans-serif;padding:96px 24px;max-width:48rem">
+      <h1>Luno — a personal AI that feels like yours</h1>
+      <p>Luno is a chat, voice, vision and code assistant, built end to end by one person. Open it in your browser
+        today, or add it to your iPhone home screen.</p>
+      <p><a href="https://app.lunoai.in" style="color:#4df0e0">Try Luno at app.lunoai.in</a></p>
+      <h2>One Luno. Different ways of thinking.</h2>
+      <ul>
+        <li>Auto: adapts to the question, deciding how much thinking a request needs.</li>
+        <li>Pro: advanced general intelligence for demanding everyday work.</li>
+        <li>Deep: explores a problem in layers, for hard reasoning.</li>
+        <li>Code: built for engineering, precise and structured.</li>
+      </ul>
+      <h2>What Luno can do</h2>
+      <ul>
+        <li>Reasoning, search, memory and sync across devices.</li>
+        <li>Vision: reads photos, screenshots and handwritten notes.</li>
+        <li>Voice: full back-and-forth speech.</li>
+      </ul>
+      <h2>Private to your account</h2>
+      <p>Your preferences and past conversations carry over between sessions and stay private to your own account.</p>
+    </main>
+  </div>
+
+  <noscript>
+    <style>#boot { display: none; }</style>
+  </noscript>
+
   <script type="module" src="/src/main.tsx"></script>
 </body>
+
 </html>
